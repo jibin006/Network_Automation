@@ -1,32 +1,20 @@
 import time
-
-from paramiko import client
+from paramiko import SSHClient, AutoAddPolicy
 from getpass import getpass
 
 hostname = 'csr1.test.lab'
-username = input("Enter Username:")
+username = input("Enter Username:") or 'admin'
+password = getpass(f"Enter Password of the user {username}: ") or 'admin'
 
-if not username:
-    username = 'admin'
-    print(f"No username provided, considering default username {username}")
+with SSHClient() as ssh_client:
+    ssh_client.set_missing_host_key_policy(AutoAddPolicy())
+    ssh_client.connect(hostname, port=22, username=username, password=password, look_for_keys=False, allow_agent=False)
 
-password = getpass(f"Enter Password of the user {username}: ") or "admin"
+    print("Connected successfully")
 
-ssh_client = client.SSHClient()
-ssh_client.set_missing_host_key_policy(client.AutoAddPolicy())
+    with ssh_client.invoke_shell() as device_access:
+        device_access.send("terminal len 0\nshow run\n")
+        time.sleep(2)
 
-ssh_client.connect(hostname=hostname,
-                   port=22,
-                   username=username,
-                   password=password,
-                   look_for_keys=False, allow_agent=False)
-
-print("Connected successfully")
-device_access = ssh_client.invoke_shell()
-device_access.send("terminal len 0\n")
-device_access.send("show run\n")
-time.sleep(2)
-
-output = device_access.recv(65535)
-print(output.decode())
-ssh_client.close()
+        output = device_access.recv(65535)
+        print(output.decode())
