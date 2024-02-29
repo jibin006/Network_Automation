@@ -1,3 +1,5 @@
+#This script is a basic example of network automation using Python, focusing on connecting to a network device (presumably a Cisco CSR router in this case) using SSH, sending commands, and retrieving the output. 
+
 import time
 from paramiko import SSHClient, AutoAddPolicy
 from getpass import getpass
