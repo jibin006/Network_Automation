@@ -2,7 +2,7 @@ import os
 import openai
 
 # Replace 'your-api-key-here' with your actual API key
-api_key = "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"
+api_key = "your-api-key-here"
 
 client = openai.OpenAI(api_key=api_key)
 
