@@ -1,3 +1,5 @@
+#Create a script to monitor system log files and detect specific patterns
+
 import time
 from datetime import datetime
 import re
