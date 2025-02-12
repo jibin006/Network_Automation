@@ -10,4 +10,4 @@ for port in ports:
     if port_status.get(port) == "open":
        open_ports.append(port)
 
-print("open ports are {}", open_ports)       
+print("open ports are: ", open_ports)       
